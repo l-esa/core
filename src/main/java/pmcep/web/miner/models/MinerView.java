@@ -7,7 +7,7 @@ import lombok.Getter;
 public class MinerView {
 
 	public enum Type {
-		RAW, GRAPHVIZ;
+		RAW, GRAPHVIZ, BINARY;
 	}
 
 	@Getter

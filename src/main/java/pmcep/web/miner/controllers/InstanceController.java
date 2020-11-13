@@ -43,11 +43,12 @@ public class InstanceController {
 	}
 	
 	@PostMapping("/instances/{minerId}")
-	public ResponseEntity<Void> createInstance(@PathVariable("minerId") String minerId, @RequestBody MinerInstanceConfiguration configuration) {
+	public ResponseEntity<MinerInstance> createInstance(@PathVariable("minerId") String minerId, @RequestBody MinerInstanceConfiguration configuration) {
 		if (!minerController.minerExists(minerId)) {
 			return ResponseEntity.notFound().build();
 		}
 		// create an instance of the miner
+		MinerInstance mi = null;
 		try {
 			Miner miner = minerController.getById(minerId);
 			Class<AbstractMiner> clazz = miner.getMinerClass();
@@ -56,7 +57,7 @@ public class InstanceController {
 			minerObject.setStream(configuration.getStream());
 			minerObject.configure(configuration.getParameterValues());
 			
-			MinerInstance mi = new MinerInstance(miner, configuration);
+			mi = new MinerInstance(miner, configuration);
 			mi.setMinerObject(minerObject);
 			
 			instances.put(mi.getId(), mi);
@@ -65,7 +66,7 @@ public class InstanceController {
 			Logger.instance().error(e);
 		}
 		
-		return ResponseEntity.ok().build();
+		return new ResponseEntity<MinerInstance>(mi, HttpStatus.OK);
 	}
 	
 	@GetMapping("/instances/{instanceId}/start")
@@ -120,7 +121,7 @@ public class InstanceController {
 	}
 	
 	@PostMapping(
-		value = "/instances/{instanceId}/view",
+		value = "/instances/{instanceId}/views",
 		produces = { "application/json" })
 	public ResponseEntity<Collection<MinerView>> instanceView(@PathVariable("instanceId") String instanceId, @RequestBody List<MinerParameterValue> configuration) {
 		if (!instances.containsKey(instanceId)) {
