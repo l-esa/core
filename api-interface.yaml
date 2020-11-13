@@ -60,7 +60,9 @@ paths:
           $ref: "#/definitions/MinerInstanceConfiguration"
       responses: 
         "200": 
-          description: "OK" 
+          description: "OK"
+          schema:
+            $ref: '#/definitions/MinerInstance'
         "404": 
           description: "Miner not found"
           
@@ -139,7 +141,7 @@ paths:
           description: "Instance not found"
   
         
-  /instances/{instanceId}/view:
+  /instances/{instanceId}/views:
     post:
       tags:
         - "instances"
@@ -271,3 +273,4 @@ definitions:
         enum:
           - "raw"
           - "graphviz"
+          - "binary"
