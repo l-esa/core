@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pmcep.logger.Logger;
-import pmcep.miners.exceptions.MinerException;
-import pmcep.miners.type.AbstractMiner;
+import pmcep.miner.AbstractMiner;
+import pmcep.miner.exceptions.MinerException;
 import pmcep.web.miner.models.Miner;
 import pmcep.web.miner.models.MinerInstance;
 import pmcep.web.miner.models.MinerInstanceConfiguration;
@@ -33,6 +33,8 @@ public class InstanceController {
 
 	@Autowired
 	private MinerController minerController;
+	@Autowired
+	private NotificationController notificationController;
 	private Map<String, MinerInstance> instances = new HashMap<String, MinerInstance>();
 	
 	@GetMapping(
@@ -54,11 +56,14 @@ public class InstanceController {
 			Class<AbstractMiner> clazz = miner.getMinerClass();
 			
 			AbstractMiner minerObject = clazz.getDeclaredConstructor().newInstance();
+			minerObject.setNotificationController(notificationController);
 			minerObject.setStream(configuration.getStream());
 			minerObject.configure(configuration.getParameterValues());
 			
 			mi = new MinerInstance(miner, configuration);
 			mi.setMinerObject(minerObject);
+			
+			minerObject.setInstance(mi);
 			
 			instances.put(mi.getId(), mi);
 			

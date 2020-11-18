@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import pmcep.miners.type.AbstractMiner;
+import pmcep.miner.AbstractMiner;
 
 @EqualsAndHashCode
 public class MinerInstance {

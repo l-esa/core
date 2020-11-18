@@ -1,4 +1,4 @@
-package pmcep.miners.type;
+package pmcep.miner;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,9 +9,11 @@ import lombok.Setter;
 import mqttxes.lib.XesMqttConsumer;
 import mqttxes.lib.XesMqttEvent;
 import mqttxes.lib.XesMqttEventCallback;
-import pmcep.miners.exceptions.MinerException;
+import pmcep.miner.exceptions.MinerException;
 import pmcep.web.annotations.ExposedMiner;
 import pmcep.web.annotations.ExposedMinerParameter;
+import pmcep.web.miner.controllers.NotificationController;
+import pmcep.web.miner.models.MinerInstance;
 import pmcep.web.miner.models.MinerParameter;
 import pmcep.web.miner.models.MinerParameterValue;
 import pmcep.web.miner.models.MinerView;
@@ -23,15 +25,22 @@ public abstract class AbstractMiner {
 	private boolean configured = true;
 	@Getter @Setter
 	private Stream stream = null;
-
+	@Getter @Setter
+	private MinerInstance instance = null;
 	private XesMqttConsumer client;
+	@Setter
+	private NotificationController notificationController;
 	
 	public abstract void configure(Collection<MinerParameterValue> collection);
 	
 	public abstract void consumeEvent(String caseID, String activityName);
 	
 	public abstract List<MinerView> getViews(Collection<MinerParameterValue> collection);
-
+	
+	public void notifyToClients(String message) {
+		notificationController.notifyToClient(getInstance(), message);
+	}
+	
 	public Collection<MinerParameter> getConfigurationParameters() {
 		ExposedMiner annotation = this.getClass().getAnnotation(ExposedMiner.class);
 		HashSet<MinerParameter> params = new HashSet<MinerParameter>();

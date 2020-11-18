@@ -1,4 +1,4 @@
-package pmcep.miners.exceptions;
+package pmcep.miner.exceptions;
 
 public class MinerException extends Exception {
 

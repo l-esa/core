@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pmcep.logger.Logger;
-import pmcep.miners.type.AbstractMiner;
+import pmcep.miner.AbstractMiner;
 import pmcep.web.annotations.ExposedMiner;
 import pmcep.web.miner.models.Miner;
 
