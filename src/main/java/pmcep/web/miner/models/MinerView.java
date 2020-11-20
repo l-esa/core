@@ -7,13 +7,13 @@ import lombok.Getter;
 public class MinerView {
 
 	public enum Type {
-		RAW, GRAPHVIZ, BINARY;
+		RAW, GRAPHVIZ, BINARY, GOOGLE;
 	}
 
 	@Getter
 	private String name;
 	@Getter
-	private Object value;
+	protected Object value;
 	@Getter
 	private Type type;
 	

@@ -1,0 +1,8 @@
+package pmcep.web.miner.models;
+
+public class MinerViewGraphviz extends MinerView {
+
+	public MinerViewGraphviz(String name, String value) {
+		super(name, value, Type.GRAPHVIZ);
+	}
+}

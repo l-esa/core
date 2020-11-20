@@ -277,3 +277,4 @@ definitions:
           - "raw"
           - "graphviz"
           - "binary"
+          - "google"
