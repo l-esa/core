@@ -135,4 +135,6 @@ public class InstanceController {
 		
 		return new ResponseEntity<Collection<MinerView>>(instances.get(instanceId).getMinerObject().getViews(configuration), HttpStatus.OK);
 	}
+
+
 }
