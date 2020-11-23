@@ -18,6 +18,7 @@ import pmcep.web.miner.models.MinerParameter;
 import pmcep.web.miner.models.MinerParameterValue;
 import pmcep.web.miner.models.MinerView;
 import pmcep.web.miner.models.Stream;
+import pmcep.web.miner.models.notifications.Notification;
 
 public abstract class AbstractMiner {
 
@@ -37,11 +38,8 @@ public abstract class AbstractMiner {
 	
 	public abstract List<MinerView> getViews(Collection<MinerParameterValue> collection);
 	
-	public void notifyToClients(String message) {
-		notificationController.notifyToClient(getInstance(), message);
-	}
-	public void updateToClients() {
-		notificationController.updateToClient(getInstance());
+	public void notifyToClients(Notification notification) {
+		notificationController.notifyToClient(getInstance(), notification);
 	}
 
 	public Collection<MinerParameter> getConfigurationParameters() {

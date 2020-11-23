@@ -6,6 +6,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import pmcep.web.miner.models.MinerInstance;
+import pmcep.web.miner.models.notifications.Notification;
 
 @ComponentScan({"pmcep.config"})
 @Controller
@@ -14,7 +15,7 @@ public class NotificationController {
 	@Autowired
 	private SimpMessagingTemplate template;
 	
-	public void notifyToClient(MinerInstance instance, String message) {
-		template.convertAndSend("/" + instance.getId(), message);
+	public void notifyToClient(MinerInstance instance, Notification notification) {
+		template.convertAndSend("/" + instance.getId(), notification);
 	}
 }
