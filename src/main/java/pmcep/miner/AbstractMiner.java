@@ -40,7 +40,10 @@ public abstract class AbstractMiner {
 	public void notifyToClients(String message) {
 		notificationController.notifyToClient(getInstance(), message);
 	}
-	
+	public void updateToClients() {
+		notificationController.updateToClient(getInstance());
+	}
+
 	public Collection<MinerParameter> getConfigurationParameters() {
 		ExposedMiner annotation = this.getClass().getAnnotation(ExposedMiner.class);
 		HashSet<MinerParameter> params = new HashSet<MinerParameter>();
