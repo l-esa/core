@@ -10,7 +10,6 @@ import pmcep.web.miner.models.MinerParameter;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-
 public @interface ExposedMinerParameter {
 	String name();
 	MinerParameter.Type type();

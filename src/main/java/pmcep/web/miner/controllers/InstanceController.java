@@ -1,5 +1,6 @@
 package pmcep.web.miner.controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,8 @@ import pmcep.miner.exceptions.MinerException;
 import pmcep.web.miner.models.Miner;
 import pmcep.web.miner.models.MinerInstance;
 import pmcep.web.miner.models.MinerInstanceConfiguration;
+import pmcep.web.miner.models.MinerParameter;
+import pmcep.web.miner.models.MinerParameter.Type;
 import pmcep.web.miner.models.MinerParameterValue;
 import pmcep.web.miner.models.MinerView;
 
@@ -33,6 +36,8 @@ public class InstanceController {
 
 	@Autowired
 	private MinerController minerController;
+	@Autowired
+	private UploadController uploadController;
 	@Autowired
 	private NotificationController notificationController;
 	private Map<String, MinerInstance> instances = new HashMap<String, MinerInstance>();
@@ -55,10 +60,25 @@ public class InstanceController {
 			Miner miner = minerController.getById(minerId);
 			Class<AbstractMiner> clazz = miner.getMinerClass();
 			
+			Collection<MinerParameterValue> parameterValues = configuration.getParameterValues();
+			Collection<MinerParameterValue> parameterValuesTyped = new ArrayList<MinerParameterValue>(parameterValues.size());
+			for (MinerParameterValue v : parameterValues) {
+				MinerParameterValue vNew = new MinerParameterValue(v.getName(), v.getValue());
+				for (MinerParameter p : minerController.getById(minerId).getConfigurationParameters()) {
+					if (p.getName().equals(vNew.getName())) {
+						vNew.setType(p.getType());
+						if (p.getType().equals(Type.FILE)) {
+							vNew.setValue(uploadController.get((String) vNew.getValue()));
+						}
+					}
+				}
+				parameterValuesTyped.add(vNew);
+			}
+			
 			AbstractMiner minerObject = clazz.getDeclaredConstructor().newInstance();
 			minerObject.setNotificationController(notificationController);
 			minerObject.setStream(configuration.getStream());
-			minerObject.configure(configuration.getParameterValues());
+			minerObject.configure(parameterValuesTyped);
 			
 			mi = new MinerInstance(miner, configuration);
 			mi.setMinerObject(minerObject);

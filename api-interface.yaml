@@ -171,10 +171,24 @@ paths:
                 $ref: "#/definitions/MinerView"
         "404": 
           description: "Miner not found"
+          
+  /upload:
+     post:
+       tags:
+        - "utilities"
+       summary: "Uploads a file and returns an id"
+       responses:
+        "200":
+          description: "File uploaded correctly and the ID of the file is then returned"
   
   /websockets:
     get:
+      tags:
+        - "utilities"
       summary: "Reserved for websocket connection"
+      responses:
+        "200":
+          description: "All good"
   
 definitions: 
   Stream:
@@ -250,6 +264,7 @@ definitions:
           - "string"
           - "integer"
           - "double"
+          - "file"
   
   MinerParameterValue:
     type: "object"
