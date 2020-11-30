@@ -136,7 +136,7 @@ paths:
         "200": 
           description: "Whether the instance is running or not" 
           schema:
-            type: "boolean"
+            $ref: '#/definitions/MinerInstanceStatus'
         "404": 
           description: "Instance not found"
   
@@ -250,6 +250,13 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/MinerParameterValue"
+  
+  MinerInstanceStatus:
+    type: "string"
+    enum:
+      - "mining"
+      - "not_mining"
+      - "configuring"
   
   MinerParameter:
     type: "object"

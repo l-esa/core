@@ -24,6 +24,7 @@ import pmcep.miner.exceptions.MinerException;
 import pmcep.web.miner.models.Miner;
 import pmcep.web.miner.models.MinerInstance;
 import pmcep.web.miner.models.MinerInstanceConfiguration;
+import pmcep.web.miner.models.MinerInstanceStatus;
 import pmcep.web.miner.models.MinerParameter;
 import pmcep.web.miner.models.MinerParameter.Type;
 import pmcep.web.miner.models.MinerParameterValue;
@@ -41,6 +42,7 @@ public class InstanceController {
 	@Autowired
 	private NotificationController notificationController;
 	private Map<String, MinerInstance> instances = new HashMap<String, MinerInstance>();
+	private Map<String, MinerInstanceStatus> instancesStatus = new HashMap<String, MinerInstanceStatus>();
 	
 	@GetMapping(
 		value = "/instances",
@@ -78,7 +80,6 @@ public class InstanceController {
 			AbstractMiner minerObject = clazz.getDeclaredConstructor().newInstance();
 			minerObject.setNotificationController(notificationController);
 			minerObject.setStream(configuration.getStream());
-			minerObject.configure(parameterValuesTyped);
 			
 			mi = new MinerInstance(miner, configuration);
 			mi.setMinerObject(minerObject);
@@ -86,6 +87,9 @@ public class InstanceController {
 			minerObject.setInstance(mi);
 			
 			instances.put(mi.getId(), mi);
+			instancesStatus.put(mi.getId(), MinerInstanceStatus.CONFIGURING);
+			
+			configureInstance(mi.getId(), minerObject, parameterValuesTyped);
 			
 		} catch (Exception e) {
 			Logger.instance().error(e);
@@ -101,6 +105,7 @@ public class InstanceController {
 		}
 		try {
 			instances.get(instanceId).getMinerObject().start();
+			instancesStatus.put(instanceId, MinerInstanceStatus.MINING);
 		} catch (MinerException e) {
 			Logger.instance().error(e);
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
@@ -115,6 +120,7 @@ public class InstanceController {
 		}
 		try{
 			instances.remove(instanceId);
+			instancesStatus.remove(instanceId);
 		}catch (Exception e) {
 			Logger.instance().error(e);
 		}
@@ -129,6 +135,7 @@ public class InstanceController {
 		
 		try {
 			instances.get(instanceId).getMinerObject().stop();
+			instancesStatus.put(instanceId, MinerInstanceStatus.NOT_MINING);
 		} catch (MinerException e) {
 			Logger.instance().error(e);
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
@@ -137,12 +144,12 @@ public class InstanceController {
 	}
 	
 	@GetMapping("/instances/{instanceId}/status")
-	public ResponseEntity<Boolean> instanceStatus(@PathVariable("instanceId") String instanceId) {
+	public ResponseEntity<MinerInstanceStatus> instanceStatus(@PathVariable("instanceId") String instanceId) {
 		if (!instances.containsKey(instanceId)) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return new ResponseEntity<Boolean>(instances.get(instanceId).getMinerObject().isRunnning(), HttpStatus.OK);
+		return new ResponseEntity<MinerInstanceStatus>(instancesStatus.get(instanceId), HttpStatus.OK);
 	}
 	
 	@PostMapping(
@@ -156,5 +163,13 @@ public class InstanceController {
 		return new ResponseEntity<Collection<MinerView>>(instances.get(instanceId).getMinerObject().getViews(configuration), HttpStatus.OK);
 	}
 
-
+	private void configureInstance(String instanceId, AbstractMiner minerObject, Collection<MinerParameterValue> parameterValuesTyped) {
+		new Thread() {
+			@Override
+			public void run() {
+				minerObject.configure(parameterValuesTyped);
+				instancesStatus.put(instanceId, MinerInstanceStatus.NOT_MINING);
+			}
+		}.start();
+	}
 }
