@@ -29,7 +29,7 @@ public class MinerController {
 	@PostConstruct
 	public void init() {
 		Class<AbstractMiner> minerSuperClazz = AbstractMiner.class;
-		Reflections reflections = new Reflections("pmcep");
+		Reflections reflections = new Reflections("beamline");
 		for (Class<?> clazz : reflections.getTypesAnnotatedWith(ExposedMiner.class)) {
 			if (minerSuperClazz.isAssignableFrom(clazz)) {
 				ExposedMiner em = clazz.getAnnotation(ExposedMiner.class);
