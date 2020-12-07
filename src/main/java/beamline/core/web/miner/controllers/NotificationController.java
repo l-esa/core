@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import beamline.core.web.miner.models.MinerInstance;
 import beamline.core.web.miner.models.notifications.Notification;
 
-@ComponentScan({"pmcep.config"})
+@ComponentScan({"beamline.config"})
 @Controller
 public class NotificationController {
 
