@@ -12,9 +12,12 @@ public class MinerParameter {
 	private String name;
 	@Getter
 	private Type type;
+	@Getter
+	private String defaultValue;
 	
-	public MinerParameter(String name, Type type) {
+	public MinerParameter(String name, Type type, String defaultValue) {
 		this.name = name;
 		this.type = type;
+		this.defaultValue = defaultValue;
 	}
 }

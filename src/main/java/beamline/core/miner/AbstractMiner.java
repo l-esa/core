@@ -46,7 +46,7 @@ public abstract class AbstractMiner {
 		ExposedMiner annotation = this.getClass().getAnnotation(ExposedMiner.class);
 		HashSet<MinerParameter> params = new HashSet<MinerParameter>();
 		for (ExposedMinerParameter p : annotation.configurationParameters()) {
-			params.add(new MinerParameter(p.name(), p.type()));
+			params.add(new MinerParameter(p.name(), p.type(), p.defaultValue()));
 		}
 		return params;
 	}
@@ -55,7 +55,7 @@ public abstract class AbstractMiner {
 		ExposedMiner annotation = this.getClass().getAnnotation(ExposedMiner.class);
 		HashSet<MinerParameter> params = new HashSet<MinerParameter>();
 		for (ExposedMinerParameter p : annotation.viewParameters()) {
-			params.add(new MinerParameter(p.name(), p.type()));
+			params.add(new MinerParameter(p.name(), p.type(), p.defaultValue()));
 		}
 		return params;
 	}

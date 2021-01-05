@@ -40,11 +40,11 @@ public class Miner {
 		this.viewParameters = new HashSet<MinerParameter>();
 		
 		for (ExposedMinerParameter p : annotation.configurationParameters()) {
-			configurationParameters.add(new MinerParameter(p.name(), p.type()));
+			configurationParameters.add(new MinerParameter(p.name(), p.type(), p.defaultValue()));
 		}
 		
 		for (ExposedMinerParameter p : annotation.viewParameters()) {
-			viewParameters.add(new MinerParameter(p.name(), p.type()));
+			viewParameters.add(new MinerParameter(p.name(), p.type(), p.defaultValue()));
 		}
 	}
 }
