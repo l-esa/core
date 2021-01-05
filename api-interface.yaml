@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   description: ""
   version: "0.0.1"
-  title: "OML framework"
+  title: "Beamline"
 host: "localhost:8080"
 basePath: "/api/v1"
 schemes:
@@ -272,6 +272,10 @@ definitions:
           - "integer"
           - "double"
           - "file"
+          - "range_0_1"
+      defaultValue:
+        type: "string"
+        description: "The default value for the parameter"
   
   MinerParameterValue:
     type: "object"

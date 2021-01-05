@@ -13,4 +13,5 @@ import beamline.core.web.miner.models.MinerParameter;
 public @interface ExposedMinerParameter {
 	String name();
 	MinerParameter.Type type();
+	String defaultValue();
 }
