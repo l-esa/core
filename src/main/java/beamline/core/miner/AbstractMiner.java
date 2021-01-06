@@ -1,6 +1,7 @@
 package beamline.core.miner;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -31,6 +32,10 @@ public abstract class AbstractMiner {
 	private XesMqttConsumer client;
 	@Setter
 	private NotificationController notificationController;
+	@Getter
+	private Date startDate;
+	@Getter
+	private int events = 0;
 	
 	public abstract void configure(Collection<MinerParameterValue> collection);
 	
@@ -71,11 +76,13 @@ public abstract class AbstractMiner {
 		client.subscribe(stream.getProcessName(), new XesMqttEventCallback() {
 			@Override
 			public void accept(XesMqttEvent e) {
+				events++;
 				consumeEvent(e.getCaseId(), e.getActivityName());
 			}
 		});
 
 		client.connect();
+		startDate = new Date();
 		running = true;
 	}
 	

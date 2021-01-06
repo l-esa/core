@@ -28,6 +28,7 @@ import beamline.core.web.miner.models.MinerInstanceStatus;
 import beamline.core.web.miner.models.MinerParameter;
 import beamline.core.web.miner.models.MinerParameterValue;
 import beamline.core.web.miner.models.MinerView;
+import beamline.core.web.miner.models.MinerViewSummary;
 import beamline.core.web.miner.models.MinerParameter.Type;
 
 @RestController
@@ -160,7 +161,10 @@ public class InstanceController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return new ResponseEntity<Collection<MinerView>>(instances.get(instanceId).getMinerObject().getViews(configuration), HttpStatus.OK);
+		MinerInstance mi = instances.get(instanceId);
+		List<MinerView> views = mi.getMinerObject().getViews(configuration);
+		views.add(0, new MinerViewSummary(mi));
+		return new ResponseEntity<Collection<MinerView>>(views, HttpStatus.OK);
 	}
 
 	private void configureInstance(String instanceId, AbstractMiner minerObject, Collection<MinerParameterValue> parameterValuesTyped) {
