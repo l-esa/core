@@ -273,6 +273,7 @@ definitions:
           - "double"
           - "file"
           - "range_0_1"
+          - "choice"
       defaultValue:
         type: "string"
         description: "The default value for the parameter"

@@ -5,7 +5,7 @@ import lombok.Getter;
 public class MinerParameter {
 
 	public enum Type {
-		STRING, INTEGER, DOUBLE, RANGE_0_1, FILE;
+		STRING, INTEGER, DOUBLE, RANGE_0_1, FILE, CHOICE;
 	}
 	
 	@Getter
