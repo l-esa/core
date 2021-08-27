@@ -57,7 +57,7 @@
 			<version>2.8.0</version>
 		</dependency>
 		<dependency>
-			<groupId>beamline</groupId>
+			<groupId>com.github.beamline</groupId>
 			<artifactId>mqtt-xes</artifactId>
 			<version>0.3.5</version>
 		</dependency>
