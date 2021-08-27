@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>beamline</groupId>
 	<artifactId>core</artifactId>
-	<version>0.0.17</version>
+	<version>0.0.18</version>
 	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -21,14 +21,8 @@
 	
 	<repositories>
 		<repository>
-			<id>beamline</id>
-			<name></name>
-			<url>https://dl.bintray.com/delas/beamline</url>
-		</repository>
-		<repository>
-			<id>org.deckfour</id>
-			<name></name>
-			<url>https://dl.bintray.com/delas/org.deckfour</url>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 	
@@ -93,12 +87,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	<distributionManagement>
-		<repository>
-			<id>bintray-delas-beamline</id>
-			<name>delas-beamline</name>
-			<url>https://api.bintray.com/maven/delas/beamline/core/;publish=1</url>
-		</repository>
-	</distributionManagement>
 </project>
